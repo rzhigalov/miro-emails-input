@@ -212,11 +212,20 @@ var EmailsInput = (function () {
     return {
       container: element,
 
-      getValues: function getValues() {},
-
-      add: function add(email) {},
-
-      reset: function reset() {},
+      getValues: function getValues() {
+        return items.map(function (item) {
+          return Object.assign({}, item);
+        });
+      },
+      add: function add(email) {
+        addItems(email);
+      },
+      reset: function reset() {
+        container.querySelectorAll('[data-item-id]').forEach(function (itemNode) {
+          container.removeChild(itemNode);
+        });
+        items = [];
+      },
 
       // TODO: Implement subscribe on callback
       // TODO: Implement subscribe on events
