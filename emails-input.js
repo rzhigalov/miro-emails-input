@@ -364,16 +364,33 @@ var EmailsInput = (function () {
     inputElement = createInput(container, options);
 
     return {
+      /** @type {HTMLElement} EmailsInput container DOM node. */
       container: element,
 
+      /**
+       * Retrieve collected emails along with its validity and renderedId
+       * @returns {EmailsInputItem[]} EmailsInput items
+       */
       getValues: function getValues() {
         return items.map(function (item) {
           return Object.assign({}, item);
         });
       },
+
+      /**
+       * Add one or more emails
+       * @param {string | string[]} email New email values.
+       * @returns {EmailsInputItem[]} EmailsInput items
+       */
       add: function add(email) {
         addItems(email);
+        return this.getValues();
       },
+
+      /**
+       * Reset EmailsInput state. Removes all emails.
+       * @returns void
+       */
       reset: function reset() {
         container.querySelectorAll('[data-item-id]').forEach(function (itemNode) {
           container.removeChild(itemNode);
@@ -382,6 +399,10 @@ var EmailsInput = (function () {
         notifyOnChanges();
       },
 
+      /**
+       * Subscribe to chanes by providing callback
+       * @returns void
+       */
       subscribe: function subscribe(cb) {
         subscriptions.push(cb);
       }
