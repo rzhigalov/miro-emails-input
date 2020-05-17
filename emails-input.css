@@ -9,7 +9,7 @@
   color: #050038;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
-  line-height: 24px;
+  line-height: 1.7143;
 
   overflow: auto;
 }
@@ -42,7 +42,7 @@
 .emails-input__item {
   position: relative;
   margin: 4px;
-  padding: 0 8px 0 10px;
+  padding: 0 0.57143em 0 0.7142em;
   white-space: nowrap;
 
   background: rgba(102, 153, 255, 0.2);
@@ -70,9 +70,9 @@
 
 .emails-input__remove {
   position: relative;
-  width: 8px;
+  width: 0.57143em;
   margin: 0;
-  margin-left: 8px;
+  margin-left: 0.57143em;
   padding: 0;
   background: transparent;
   border: none;
@@ -85,7 +85,7 @@
   content: '';
   position: absolute;
   top: 0;
-  left: -8px;
-  right: -8px;
+  left: -0.57143em;
+  right: -0.57143em;
   bottom: 0;
 }
