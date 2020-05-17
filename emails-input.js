@@ -388,15 +388,28 @@ var EmailsInput = (function () {
       },
 
       /**
+       * Replace all entered emails with new ones
+       * @param {string | string[]} email New email values.
+       * @returns {EmailsInputItem[]} EmailsInput items
+       */
+      replaceAll: function add(email) {
+        this.reset(true);
+        addItems(email);
+        return this.getValues();
+      },
+
+      /**
        * Reset EmailsInput state. Removes all emails.
        * @returns void
        */
-      reset: function reset() {
+      reset: function reset(silent) {
         container.querySelectorAll('[data-item-id]').forEach(function (itemNode) {
           container.removeChild(itemNode);
         });
         items = [];
-        notifyOnChanges();
+        if (!silent) {
+          notifyOnChanges();
+        }
       },
 
       /**
