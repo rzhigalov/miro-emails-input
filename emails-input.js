@@ -58,10 +58,23 @@ var EmailsInput = (function () {
         emailRemoveElement.setAttribute('type', 'button');
         emailRemoveElement.innerHTML = ASSET_SVG_CLOSE_ICON;
         emailRemoveElement.classList.add(setNsClassName('emails-input__remove'));
-        // TODO: add removeItem click handler
+        emailRemoveElement.addEventListener('click', function () {
+          return removeItem(email.renderedId);
+        }, false);
 
         emailElement.append(emailRemoveElement);
         container.insertBefore(emailElement, inputElement);
+      });
+    }
+
+    function removeItem(itemId) {
+      if (!itemId) return;
+
+      var itemElement = container.querySelector('[data-item-id="' + itemId + '"]');
+      container.removeChild(itemElement);
+
+      items = items.filter(function (item) {
+        return item.renderedId !== itemId;
       });
     }
 
