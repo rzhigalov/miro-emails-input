@@ -1,5 +1,6 @@
 .emails-input {
-  height: 96px;
+  min-height: 96px;
+  max-height: 96px;
 
   background: #FFF;
   border: 1px solid #C3C2CF;
@@ -16,7 +17,8 @@
 .emails-input__container {
   display: flex;
   flex-wrap: wrap;
-  padding: 4px;
+  padding: 3px 2px;
+}
 
 .emails-input__input {
   flex: 1 0 auto;

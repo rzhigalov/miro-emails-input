@@ -8,7 +8,9 @@ var EmailsInput = (function () {
     autofocus: false,
     autocomplete: false,
     maxLength: null,
-    placeholder: 'add email by typing here'
+    placeholder: 'add email by typing here',
+    maxHeight: null,
+    minHeight: null
   };
 
   var id = 1;
@@ -185,6 +187,16 @@ var EmailsInput = (function () {
 
     if (opts.pattern !== undefined) {
       options.pattern = new RegExp(opts.pattern);
+    }
+
+    if (options.minHeight) {
+      if (typeof options.minHeight === 'number') options.minHeight += 'px';
+      element.style.minHeight = options.minHeight;
+    }
+
+    if (options.maxHeight) {
+      if (typeof options.maxHeight === 'number') options.maxHeight += 'px';
+      element.style.maxHeight = options.maxHeight;
     }
 
     // Setup parent element
