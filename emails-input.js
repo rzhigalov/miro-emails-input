@@ -3,6 +3,7 @@
 var EmailsInput = (function () {
 
   var DEFAULT_OPTIONS = {
+    pattern: /^[\w.%+-/!#$%&'*=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     cssNamespace: null,
     autofocus: false,
     autocomplete: false,
@@ -14,6 +15,12 @@ var EmailsInput = (function () {
 
     function setNsClassName(className) {
       return options.cssNamespace ? options.cssNamespace + '-' + className : className;
+    }
+
+    function validateEmail(email) {
+      if (!email) return false;
+      if (!options.pattern) return true;
+      return options.pattern.test(email);
     }
 
     function createInput(parentNode, opts) {
@@ -48,6 +55,10 @@ var EmailsInput = (function () {
     var options;
 
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
+
+    if (opts.pattern !== undefined) {
+      options.pattern = new RegExp(opts.pattern);
+    }
 
     // Setup parent element
     element.classList.add(setNsClassName('emails-input'));
