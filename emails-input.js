@@ -11,6 +11,8 @@ var EmailsInput = (function () {
     placeholder: 'add email by typing here'
   };
 
+  var id = 1;
+
   return function EmailsInput(element, opts) {
 
     function setNsClassName(className) {
@@ -51,11 +53,15 @@ var EmailsInput = (function () {
       return emailInputElement;
     }
 
+    var instanceId = 'ei' + id++;
+    var itemId = 0;
 
     var options;
 
     var container;
     var inputElement;
+    var items = [];
+
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
 
     if (opts.pattern !== undefined) {
