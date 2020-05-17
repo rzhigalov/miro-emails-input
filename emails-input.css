@@ -78,3 +78,12 @@
   text-transform: none;
   cursor: pointer;
 }
+
+.emails-input__remove::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -8px;
+  right: -8px;
+  bottom: 0;
+}
