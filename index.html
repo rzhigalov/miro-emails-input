@@ -62,6 +62,13 @@
       .miro_share__button + .miro_share__button {
         margin-left: 16px;
       }
+
+      .demo_emails-counter {
+        max-width: 440px;
+        margin: 32px auto;
+        color: #c5c4d1;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -80,6 +87,11 @@
             onclick="getEmailsCount()">Get emails count</button>
         </div>
       </div>
+
+      <div class="demo_emails-counter">
+        <span>Total emails added:</span>
+        <span id="emails-input-counter">0</span>
+      </div>
     </main>
 
     <script src="emails-input.js" type="text/javascript"></script>
@@ -90,6 +102,10 @@
       };
       var inputContainerNode = document.querySelector('#emails-input');
       var emailsInput = EmailsInput(inputContainerNode, options);
+
+      inputContainerNode.addEventListener('emailsinputchange', function(evt) {
+        document.getElementById('emails-input-counter').innerHTML = evt.detail.length;
+      }, false);
 
       // Adds random email composed from available names & domains
       // If generated email already added, then this function will try again (up to 7 retries) or display a failure alert
@@ -104,10 +120,15 @@
           retryCount = 0;
           addedEmails.push(randomEmail);
           emailsInput.add(randomEmail);
-        } else if (retryCount >= 7) {
+        } else if (retryCount >= 11) {
           var alertMessage = "It appears that random is not on your side today.\n";
           alertMessage += "We've failed to generate another random email, although you can give it another try\n";
-          if (addedEmails.length > 100) {
+          // Tiny easter eggs 🙄
+          if (addedEmails.length > 220) {
+            alertMessage = "🎉 Oh, buy a lottery ticket today! I've never got this far. 😉";
+          } else if (addedEmails.length > 200) {
+            alertMessage += "\nStop trying, I've never got more than 220. And you have " + addedEmails.length + " emails by now.";
+          } else if (addedEmails.length > 100) {
             alertMessage += "\nOn another hand, maybe " + addedEmails.length + " emails is enough?";
           }
           alert(alertMessage);
