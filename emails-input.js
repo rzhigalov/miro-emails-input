@@ -39,6 +39,12 @@ var EmailsInput = (function () {
       }
     }
 
+    function handleBlur(evt) {
+      if (inputElement.value) {
+        addItems(inputElement.value);
+        inputElement.value = '';
+      }
+    }
     function renderItems() {
       items.forEach((email) => {
         // Ignore previously rendered items
@@ -145,6 +151,7 @@ var EmailsInput = (function () {
 
       // Setup input's event listeners
       emailInputElement.addEventListener('keypress', handleKeypress, false);
+      emailInputElement.addEventListener('blur', handleBlur, false);
 
       return emailInputElement;
     }
