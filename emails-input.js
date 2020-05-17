@@ -199,6 +199,14 @@ var EmailsInput = (function () {
       element.style.maxHeight = options.maxHeight;
     }
 
+    // Setup element's event listener, that will force input focus on click inside of EmailsInput
+    element.addEventListener('click', function (evt) {
+      // Ensure that click target is not a rendered item
+      if (evt.target === element || evt.target === container) {
+        inputElement.focus();
+      }
+    }, false);
+
     // Setup parent element
     element.classList.add(setNsClassName('emails-input'));
 
