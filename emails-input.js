@@ -31,6 +31,14 @@ var EmailsInput = (function () {
       return options.pattern.test(email);
     }
 
+    function handleKeypress(evt) {
+      if (evt.key === ',' || evt.key === 'Enter') {
+        evt.preventDefault();
+        addItems(inputElement.value);
+        inputElement.value = '';
+      }
+    }
+
     function renderItems() {
       items.forEach((email) => {
         // Ignore previously rendered items
@@ -135,7 +143,8 @@ var EmailsInput = (function () {
 
       parentNode.appendChild(emailInputElement);
 
-      // TODO: Setup input's event listeners
+      // Setup input's event listeners
+      emailInputElement.addEventListener('keypress', handleKeypress, false);
 
       return emailInputElement;
     }
