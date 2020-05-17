@@ -51,9 +51,11 @@ var EmailsInput = (function () {
       return emailInputElement;
     }
 
-    var container;
+
     var options;
 
+    var container;
+    var inputElement;
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
 
     if (opts.pattern !== undefined) {
