@@ -13,6 +13,12 @@ var EmailsInput = (function () {
 
   var id = 1;
 
+  var ASSET_SVG_CLOSE_ICON =
+    '<svg width="100%" height="100%" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M8 0.8L7.2 0L4 3.2L0.8 0L0 0.8L3.2 4L0 7.2L0.8 8L4 4.8L7.2 8L8 7.2L4.8 4L8 0.8Z" fill="currentColor"/>' +
+    '</svg>';
+
+
   return function EmailsInput(element, opts) {
 
     function setNsClassName(className) {
@@ -50,7 +56,7 @@ var EmailsInput = (function () {
         // Create child button and setup `remove` hook
         var emailRemoveElement = document.createElement('button');
         emailRemoveElement.setAttribute('type', 'button');
-        emailRemoveElement.innerHTML = '&times;';
+        emailRemoveElement.innerHTML = ASSET_SVG_CLOSE_ICON;
         emailRemoveElement.classList.add(setNsClassName('emails-input__remove'));
         // TODO: add removeItem click handler
 
