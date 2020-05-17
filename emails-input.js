@@ -45,6 +45,21 @@ var EmailsInput = (function () {
         inputElement.value = '';
       }
     }
+
+    function handlePaste(evt) {
+      var pastedText = (evt.clipboardData || window.clipboardData).getData('text');
+
+      if (inputElement.value) {
+        // If input has any value – prepend it to pasted values
+        // May behave in unexpected way as it ignores caret position
+        pastedText = inputElement.value + pastedText;
+        inputElement.value = '';
+      }
+
+      addItems(pastedText);
+      evt.preventDefault();
+    }
+
     function renderItems() {
       items.forEach((email) => {
         // Ignore previously rendered items
@@ -152,6 +167,7 @@ var EmailsInput = (function () {
       // Setup input's event listeners
       emailInputElement.addEventListener('keypress', handleKeypress, false);
       emailInputElement.addEventListener('blur', handleBlur, false);
+      emailInputElement.addEventListener('paste', handlePaste, false);
 
       return emailInputElement;
     }
