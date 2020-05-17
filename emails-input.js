@@ -138,6 +138,19 @@ var EmailsInput = (function () {
     }
 
     /**
+     * Invokes all subscribed callbacks
+     * @returns void
+     */
+    function notifySubscribed() {
+      var updatedItems = items.map(function(item) {
+        return Object.assign({}, item);
+      });
+      subscriptions.forEach(function(cb) {
+        cb(updatedItems);
+      })
+    }
+
+    /**
      * EmailsInput items renderer function.
      * @returns void
      */
@@ -191,6 +204,8 @@ var EmailsInput = (function () {
       items = items.filter(function (item) {
         return item.renderedId !== itemId;
       });
+
+      notifySubscribed();
     }
 
     /**
@@ -229,6 +244,7 @@ var EmailsInput = (function () {
         );
 
         renderItems();
+        notifySubscribed();
       }
     }
 
@@ -283,6 +299,8 @@ var EmailsInput = (function () {
     var inputElement;
     /** @type {EmailsInputItem[]} Collection of EmailsInput added emails. */
     var items = [];
+    /** @type {Function[]} Subscribed callbacks array. */
+    var subscriptions = []
 
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
 
@@ -338,11 +356,12 @@ var EmailsInput = (function () {
           container.removeChild(itemNode);
         });
         items = [];
+        notifySubscribed();
       },
 
-      // TODO: Implement subscribe on callback
-      // TODO: Implement subscribe on events
-      subscribe: function subscribe() {}
+      subscribe: function subscribe(cb) {
+        subscriptions.push(cb);
+      }
     };
   };
 })();
