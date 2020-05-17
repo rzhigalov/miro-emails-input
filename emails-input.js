@@ -28,6 +28,7 @@ var EmailsInput = (function () {
   /** @type {EmailsInputOptions} EmailsInput options defaults */
   var DEFAULT_OPTIONS = {
     pattern: /^[\w.%+-/!#$%&'*=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    embedCSS: true,
     cssNamespace: null,
     autofocus: false,
     autocomplete: false,
@@ -44,11 +45,33 @@ var EmailsInput = (function () {
     '<svg width="100%" height="100%" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">' +
     '<path d="M8 0.8L7.2 0L4 3.2L0.8 0L0 0.8L3.2 4L0 7.2L0.8 8L4 4.8L7.2 8L8 7.2L4.8 4L8 0.8Z" fill="currentColor"/>' +
     '</svg>';
+  var STYLESHEET_TEMPLATE =
+    ".{{prefix}}emails-input { min-height: 96px; max-height: 96px; background: #FFF; border: 1px solid #C3C2CF; border-radius: 4px; color: #050038; font-size: 14px; font-family: 'Open Sans', sans-serif; line-height: 1.7143; overflow: auto; } .{{prefix}}emails-input__container { display: flex; flex-wrap: wrap; padding: 3px 2px; } .{{prefix}}emails-input__input { flex: 1 0 auto; padding: 0; margin: 4px; background: transparent; border: 0; color: inherit; font-size: inherit; line-height: inherit; outline: 0; } .{{prefix}}emails-input__input::placeholder { color: #C3C2CF; } .{{prefix}}emails-input__item { position: relative; margin: 4px; padding: 0 0.57143em 0 0.7142em; white-space: nowrap; background: rgba(102, 153, 255, 0.2); border-radius: 100px; } .{{prefix}}emails-input__item--invalid { padding: 0; background: transparent; border-radius: 0; } .{{prefix}}emails-input__item--invalid::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; border-bottom: 1px dashed #D92929; } .{{prefix}}emails-input__item-value { display: inline-block; } .{{prefix}}emails-input__remove { position: relative; width: 0.57143em; margin: 0; margin-left: 0.57143em; padding: 0; background: transparent; border: none; font: inherit; text-transform: none; cursor: pointer; } .{{prefix}}emails-input__remove::before { content: ''; position: absolute; top: 0; left: -0.57143em; right: -0.57143em; bottom: 0; }";
 
   return function EmailsInput(
     /** @type{HTMLElement} */ element,
     /** @type{EmailsInputOptions} */ opts
   ) {
+
+    /**
+     * Injects namespaced stylesheet in runtime
+     * @param {string | null} cssNamespace
+     * @returns void
+     */
+    function injectStyleSheet(cssNamespace) {
+      var styleSheetId = 'emails-input__styles' + (cssNamespace ? '--' + cssNamespace : '');
+
+      if (!document.getElementById(styleSheetId)) {
+        var prefixedStyleSheet = STYLESHEET_TEMPLATE.replace(
+          /{{prefix}}/g,
+          cssNamespace ? cssNamespace + '-' : ''
+        );
+        var stylesNode = document.createElement('style');
+        stylesNode.id = styleSheetId;
+        stylesNode.innerHTML = prefixedStyleSheet;
+        document.head.append(stylesNode);
+      }
+    }
 
     /**
      * Compose CSS class name with namespace from options
@@ -262,6 +285,10 @@ var EmailsInput = (function () {
     var items = [];
 
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
+
+    if (options.embedCSS !== false) {
+      injectStyleSheet(options.cssNamespace);
+    }
 
     if (opts.pattern !== undefined) {
       options.pattern = new RegExp(opts.pattern);
