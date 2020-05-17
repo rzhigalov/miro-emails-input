@@ -15,13 +15,18 @@
 }
 
 .emails-input__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   padding: 3px 2px;
 }
 
 .emails-input__input {
-  flex: 1 0 auto;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
 
   padding: 0;
   margin: 4px;
@@ -33,6 +38,22 @@
   font-size: inherit;
   line-height: inherit;
   outline: 0;
+}
+
+.emails-input__input::-webkit-input-placeholder {
+  color: #C3C2CF;
+}
+
+.emails-input__input::-moz-placeholder {
+  color: #C3C2CF;
+}
+
+.emails-input__input:-ms-input-placeholder {
+  color: #C3C2CF;
+}
+
+.emails-input__input::-ms-input-placeholder {
+  color: #C3C2CF;
 }
 
 .emails-input__input::placeholder {
