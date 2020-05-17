@@ -78,6 +78,40 @@ var EmailsInput = (function () {
       });
     }
 
+    function addItems(newValues) {
+      // If passed as a string – split by comma into array
+      if (!Array.isArray(newValues)) {
+        newValues = newValues.split(/\s*,\s*/);
+      }
+
+      // Ensure no duplicates are inserted
+      var existingValues = items.map(function (item) {
+        return item.value;
+      });
+      var uniqueNewValues = newValues
+        .map(function (email) {
+          return email && email.trim();
+        })
+        .filter(function (email) {
+          return email && existingValues.indexOf(email) === -1;
+        });
+
+      if (uniqueNewValues.length) {
+        // Append new values into existing list
+        items = items.concat(
+          uniqueNewValues.map(function (email) {
+            return {
+              value: email,
+              valid: validateEmail(email),
+              renderedId: null
+            };
+          })
+        );
+
+        renderItems();
+      }
+    }
+
     function createInput(parentNode, opts) {
       // Create an HTMLInputElement with attributes based on options
       var emailInputElement = document.createElement('input');
