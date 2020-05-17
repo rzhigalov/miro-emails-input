@@ -1,7 +1,31 @@
 'use strict';
 
 var EmailsInput = (function () {
+  /**
+   * An EmailsInput Options object
+   * @typedef EmailsInputOptions
+   * @type {object}
+   * @property {string}         pattern RegExp pattern to validate emails.
+   * @property {boolean}        embedCSS Enables runtime stylesheet embedding.
+   * @property {string | null}  cssNamespace CSS classes prefix.
+   * @property {boolean}        autofocus Enforces autofocus tag on input.
+   * @property {boolean}        autocomplete Enforces autocomplete tag on input.
+   * @property {number | null}  maxLength Max length restriction for input.
+   * @property {string}         placeholder Input's placeholder attribute.
+   * @property {number | string | null} maxHeight EmailsInput max height restriction. If passed as number will treat value as px.
+   * @property {number | string | null} minHeight EmailsInput min height restriction. If passed as number will treat value as px.
+   */
 
+  /**
+   * An EmailsInput Item object
+   * @typedef EmailsInputItem
+   * @type {object}
+   * @property {string}         value Item's email value.
+   * @property {boolean}        valid Email validity flag.
+   * @property {string | null}  renderedId Internal rendered id.
+   */
+
+  /** @type {EmailsInputOptions} EmailsInput options defaults */
   var DEFAULT_OPTIONS = {
     pattern: /^[\w.%+-/!#$%&'*=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
     cssNamespace: null,
@@ -13,6 +37,7 @@ var EmailsInput = (function () {
     minHeight: null
   };
 
+  /** @type {number} Global EmailsInput id base reference. */
   var id = 1;
 
   var ASSET_SVG_CLOSE_ICON =
@@ -20,19 +45,36 @@ var EmailsInput = (function () {
     '<path d="M8 0.8L7.2 0L4 3.2L0.8 0L0 0.8L3.2 4L0 7.2L0.8 8L4 4.8L7.2 8L8 7.2L4.8 4L8 0.8Z" fill="currentColor"/>' +
     '</svg>';
 
+  return function EmailsInput(
+    /** @type{HTMLElement} */ element,
+    /** @type{EmailsInputOptions} */ opts
+  ) {
 
-  return function EmailsInput(element, opts) {
-
+    /**
+     * Compose CSS class name with namespace from options
+     * @param {string} className
+     * @returns {string} Prefixed className
+     */
     function setNsClassName(className) {
       return options.cssNamespace ? options.cssNamespace + '-' + className : className;
     }
 
+    /**
+     * Validate email against a pattern
+     * @param {string} email
+     * @returns {boolean} Email validity
+     */
     function validateEmail(email) {
       if (!email) return false;
       if (!options.pattern) return true;
       return options.pattern.test(email);
     }
 
+    /**
+     * Input's Keypress event handler. Triggers value addition when ',' or 'Enter' key pressed
+     * @param {KeyboardEvent} evt KeyboardEvent
+     * @returns void
+     */
     function handleKeypress(evt) {
       if (evt.key === ',' || evt.key === 'Enter') {
         evt.preventDefault();
@@ -41,6 +83,11 @@ var EmailsInput = (function () {
       }
     }
 
+    /**
+     * Input's blur event handler. Triggers value addition when input loses focus
+     * @param {FocusEvent} evt FocusEvent
+     * @returns void
+     */
     function handleBlur(evt) {
       if (inputElement.value) {
         addItems(inputElement.value);
@@ -48,6 +95,11 @@ var EmailsInput = (function () {
       }
     }
 
+    /**
+     * Input's paste event handler. Triggers value addition when value pasted into input
+     * @param {ClipboardEvent} evt ClipboardEvent
+     * @returns void
+     */
     function handlePaste(evt) {
       var pastedText = (evt.clipboardData || window.clipboardData).getData('text');
 
@@ -62,6 +114,10 @@ var EmailsInput = (function () {
       evt.preventDefault();
     }
 
+    /**
+     * EmailsInput items renderer function.
+     * @returns void
+     */
     function renderItems() {
       items.forEach((email) => {
         // Ignore previously rendered items
@@ -98,6 +154,11 @@ var EmailsInput = (function () {
       });
     }
 
+    /**
+     * Removes item from collection and HTML markup
+     * @param {string} itemId Item's renderedId
+     * @returns void
+     */
     function removeItem(itemId) {
       if (!itemId) return;
 
@@ -109,6 +170,11 @@ var EmailsInput = (function () {
       });
     }
 
+    /**
+     * Handles new values addition.
+     * @param {string | string[]} newValues Value(s) from input (event listeners/Public API)
+     * @returns void
+     */
     function addItems(newValues) {
       // If passed as a string – split by comma into array
       if (!Array.isArray(newValues)) {
@@ -143,6 +209,12 @@ var EmailsInput = (function () {
       }
     }
 
+    /**
+     * Setup EmailsInput input element and its event listeners
+     * @param {Node} parentNode Input's parent node
+     * @param {EmailsInputOptions} opts Emails Input options
+     * @returns {Node} Input HTML element reference
+     */
     function createInput(parentNode, opts) {
       // Create an HTMLInputElement with attributes based on options
       var emailInputElement = document.createElement('input');
@@ -174,13 +246,19 @@ var EmailsInput = (function () {
       return emailInputElement;
     }
 
+    /** @type {number} This EmailsInput instance id. */
     var instanceId = 'ei' + id++;
+    /** @type {number} This EmailsInput item id base reference. */
     var itemId = 0;
 
+    /** @type {EmailsInputOptions} EmailsInput instance options */
     var options;
 
+    /** @type {HTMLDivElement} Internal EmailsInput wrapper element. */
     var container;
+    /** @type {HTMLInputElement} Internal EmailsInput input element. */
     var inputElement;
+    /** @type {EmailsInputItem[]} Collection of EmailsInput added emails. */
     var items = [];
 
     options = Object.assign({}, DEFAULT_OPTIONS, opts);
@@ -188,6 +266,9 @@ var EmailsInput = (function () {
     if (opts.pattern !== undefined) {
       options.pattern = new RegExp(opts.pattern);
     }
+
+    // Setup parent element
+    element.classList.add(setNsClassName('emails-input'));
 
     if (options.minHeight) {
       if (typeof options.minHeight === 'number') options.minHeight += 'px';
@@ -206,9 +287,6 @@ var EmailsInput = (function () {
         inputElement.focus();
       }
     }, false);
-
-    // Setup parent element
-    element.classList.add(setNsClassName('emails-input'));
 
     // Create and setup child container element
     container = document.createElement('div');
