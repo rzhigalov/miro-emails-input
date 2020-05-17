@@ -81,10 +81,10 @@
         <div class="miro_share__footer">
           <button type="button"
             class="miro_share__button"
-            onclick="addRandomEmail()">Add email</button>
+            id="emails-input-add-random">Add email</button>
           <button type="button"
             class="miro_share__button"
-            onclick="getEmailsCount()">Get emails count</button>
+            id="emails-input-get-count">Get emails count</button>
         </div>
       </div>
 
@@ -151,6 +151,11 @@
           alertMessage += validEmailsCount + ' of them ' + (validEmailsCount === 1 ? 'is' : 'are') + ' valid.';
           alert(alertMessage);
         }
+
+        var addButton = document.getElementById('emails-input-add-random');
+        addButton.addEventListener('click', addRandomEmail, false);
+        var getCountButton = document.getElementById('emails-input-get-count');
+        getCountButton.addEventListener('click', getEmailsCount, false);
       });
     </script>
   </body>
