@@ -93,11 +93,11 @@
 
       // Adds random email composed from available names & domains
       // If generated email already added, then this function will try again (up to 7 retries) or display a failure alert
-      // Based on practical experience it allows to add up to 100 emails before showing an error
+      // Based on practical experience it allows to add up to 180 emails before showing an error
       var retryCount = 0;
       function addRandomEmail() {
-        var names = ['adam', 'alan', 'alona', 'duncan', 'ivan', 'isaac', 'jane', 'jessica', 'john', 'johnathan', 'kate', 'max', 'nick', 'nicole', 'paul', 'roman', 'valeria', 'zack'];
-        var domains = ['miro.com', 'gmail.com', 'mail.ru', 'yandex.ru', 'outlook.com', 'hotmail.com', 'yahoo.com'];
+        var names = ['adam', 'alan', 'alex', 'alona', 'artyom', 'chris', 'duncan', 'fedor', 'ivan', 'isaac', 'jake', 'jane', 'jessica', 'john', 'julia', 'kate', 'max', 'neta', 'nick', 'nicole', 'paul', 'roman', 'sophie', 'valeria', 'zack'];
+        var domains = ['miro.com', 'gmail.com', 'github.com', 'icloud.com', 'mail.com', 'mdn.com', 'yandex.ru', 'outlook.com', 'protonmail.com', 'hotmail.com', 'yahoo.com'];
         var randomEmail = names[Math.floor(Math.random() * (names.length - 1))] + '@' + domains[Math.floor(Math.random() * (domains.length - 1))];
         var addedEmails = emailsInput.getValues().map((function(item){ return item.value }));
         if (addedEmails.indexOf(randomEmail) === -1) {
@@ -105,7 +105,12 @@
           addedEmails.push(randomEmail);
           emailsInput.add(randomEmail);
         } else if (retryCount >= 7) {
-          alert("It appears that random is not on your side today.\nWe've failed to generate another random email, although you can give it another try");
+          var alertMessage = "It appears that random is not on your side today.\n";
+          alertMessage += "We've failed to generate another random email, although you can give it another try\n";
+          if (addedEmails.length > 100) {
+            alertMessage += "\nOn another hand, maybe " + addedEmails.length + " emails is enough?";
+          }
+          alert(alertMessage);
         } else {
           retryCount++;
           addRandomEmail();
