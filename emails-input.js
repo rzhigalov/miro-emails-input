@@ -3,13 +3,45 @@
 var EmailsInput = (function () {
 
   var DEFAULT_OPTIONS = {
-    cssNamespace: null
+    cssNamespace: null,
+    autofocus: false,
+    autocomplete: false,
+    maxLength: null,
+    placeholder: 'add email by typing here'
   };
 
   return function EmailsInput(element, opts) {
 
     function setNsClassName(className) {
       return options.cssNamespace ? options.cssNamespace + '-' + className : className;
+    }
+
+    function createInput(parentNode, opts) {
+      // Create an HTMLInputElement with attributes based on options
+      var emailInputElement = document.createElement('input');
+      emailInputElement.classList.add(setNsClassName('emails-input__input'));
+      emailInputElement.setAttribute('type', 'text');
+      emailInputElement.setAttribute('role', 'combobox');
+      emailInputElement.setAttribute('autocomplete', false);
+      emailInputElement.setAttribute('autocapitalize', 'off');
+      emailInputElement.setAttribute('autocorrect', 'off');
+      emailInputElement.setAttribute('spellcheck', false);
+
+      if (opts.autofocus) {
+        emailInputElement.setAttribute('autofocus', opts.autofocus);
+      }
+
+      if (opts.maxLength) {
+        emailInputElement.setAttribute('maxLength', opts.maxLength);
+      }
+
+      emailInputElement.setAttribute('placeholder', opts.placeholder);
+
+      parentNode.appendChild(emailInputElement);
+
+      // TODO: Setup input's event listeners
+
+      return emailInputElement;
     }
 
     var container;
@@ -24,6 +56,8 @@ var EmailsInput = (function () {
     container = document.createElement('div');
     container.classList.add(setNsClassName('emails-input__container'));
     element.appendChild(container);
+
+    inputElement = createInput(container, options);
 
     return {
       container: element,

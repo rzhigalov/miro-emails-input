@@ -17,4 +17,23 @@
   display: flex;
   flex-wrap: wrap;
   padding: 4px;
+
+.emails-input__input {
+  flex: 1 0 auto;
+
+  padding: 0;
+  margin: 4px;
+
+  background: transparent;
+  border: 0;
+
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  outline: 0;
+}
+
+.emails-input__input::placeholder {
+  color: #C3C2CF;
+}
 }
