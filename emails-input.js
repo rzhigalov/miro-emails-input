@@ -38,6 +38,8 @@ var EmailsInput = (function () {
     minHeight: null
   };
 
+  var DISPATCH_EVENT_NAME = 'emailsinputchange';
+
   /** @type {number} Global EmailsInput id base reference. */
   var id = 1;
 
@@ -137,14 +139,37 @@ var EmailsInput = (function () {
       evt.preventDefault();
     }
 
+
+    /**
+     * Creates CustomEvent depending on browser
+     * @param {EmailsInputItem[]} items CustomEvent payload (Event.details property)
+     * @returns CustomEvent
+     */
+    function createEvent(items) {
+      if (typeof window.CustomEvent === 'function') {
+        return new CustomEvent(DISPATCH_EVENT_NAME, { detail: items });
+      } else if (document.createEvent) {
+        // IE fallback
+        var event = document.createEvent('CustomEvent');
+        event.initCustomEvent(DISPATCH_EVENT_NAME, true, true, items);
+        return event;
+      }
+    }
+
     /**
      * Invokes all subscribed callbacks
      * @returns void
      */
-    function notifySubscribed() {
+    function notifyOnChanges() {
       var updatedItems = items.map(function(item) {
         return Object.assign({}, item);
       });
+
+      // Dispatch custom event
+      var changeEvent = createEvent(updatedItems);
+      element.dispatchEvent(changeEvent);
+
+      // Invoke all subscribed callbacks
       subscriptions.forEach(function(cb) {
         cb(updatedItems);
       })
@@ -205,7 +230,7 @@ var EmailsInput = (function () {
         return item.renderedId !== itemId;
       });
 
-      notifySubscribed();
+      notifyOnChanges();
     }
 
     /**
@@ -244,7 +269,7 @@ var EmailsInput = (function () {
         );
 
         renderItems();
-        notifySubscribed();
+        notifyOnChanges();
       }
     }
 
@@ -356,7 +381,7 @@ var EmailsInput = (function () {
           container.removeChild(itemNode);
         });
         items = [];
-        notifySubscribed();
+        notifyOnChanges();
       },
 
       subscribe: function subscribe(cb) {
