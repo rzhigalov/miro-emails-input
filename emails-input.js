@@ -25,6 +25,40 @@ var EmailsInput = (function () {
       return options.pattern.test(email);
     }
 
+    function renderItems() {
+      items.forEach((email) => {
+        // Ignore previously rendered items
+        if (email.renderedId) return;
+
+        // Compose rendered id for future use
+        email.renderedId = instanceId + '-' + ++itemId;
+
+        // Create HTMLDivElement to represent item
+        var emailElement = document.createElement('div');
+        emailElement.setAttribute('data-item-id', email.renderedId);
+        emailElement.classList.add(setNsClassName('emails-input__item'));
+
+        if (!email.valid) {
+          emailElement.classList.add(setNsClassName('emails-input__item--invalid'));
+        }
+
+        var emailContentElement = document.createElement('span');
+        emailContentElement.textContent = email.value;
+        emailContentElement.classList.add(setNsClassName('emails-input__item-value'));
+        emailElement.append(emailContentElement);
+
+        // Create child button and setup `remove` hook
+        var emailRemoveElement = document.createElement('button');
+        emailRemoveElement.setAttribute('type', 'button');
+        emailRemoveElement.innerHTML = '&times;';
+        emailRemoveElement.classList.add(setNsClassName('emails-input__remove'));
+        // TODO: add removeItem click handler
+
+        emailElement.append(emailRemoveElement);
+        container.insertBefore(emailElement, inputElement);
+      });
+    }
+
     function createInput(parentNode, opts) {
       // Create an HTMLInputElement with attributes based on options
       var emailInputElement = document.createElement('input');
