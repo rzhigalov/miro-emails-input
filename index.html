@@ -84,18 +84,45 @@
 
     <script src="emails-input.js" type="text/javascript"></script>
     <script>
-      var options = {};
+      var options = {
+        cssNamespace: 'miro',
+        placeholder: 'add more people...'
+      };
       var inputContainerNode = document.querySelector('#emails-input');
       var emailsInput = EmailsInput(inputContainerNode, options);
 
-      // Adds random email
+      // Adds random email composed from available names & domains
+      // If generated email already added, then this function will try again (up to 7 retries) or display a failure alert
+      // Based on practical experience it allows to add up to 100 emails before showing an error
+      var retryCount = 0;
       function addRandomEmail() {
-        alert('NOT IMPLEMENTED');
+        var names = ['adam', 'alan', 'alona', 'duncan', 'ivan', 'isaac', 'jane', 'jessica', 'john', 'johnathan', 'kate', 'max', 'nick', 'nicole', 'paul', 'roman', 'valeria', 'zack'];
+        var domains = ['miro.com', 'gmail.com', 'mail.ru', 'yandex.ru', 'outlook.com', 'hotmail.com', 'yahoo.com'];
+        var randomEmail = names[Math.floor(Math.random() * (names.length - 1))] + '@' + domains[Math.floor(Math.random() * (domains.length - 1))];
+        var addedEmails = emailsInput.getValues().map((function(item){ return item.value }));
+        if (addedEmails.indexOf(randomEmail) === -1) {
+          retryCount = 0;
+          addedEmails.push(randomEmail);
+          emailsInput.add(randomEmail);
+        } else if (retryCount >= 7) {
+          alert("It appears that random is not on your side today.\nWe've failed to generate another random email, although you can give it another try");
+        } else {
+          retryCount++;
+          addRandomEmail();
+        }
       }
 
-      // Displays an alert with information on added emails
+      // Displays an alert with information on added emails (total and valid)
       function getEmailsCount() {
-        alert('NOT IMPLEMENTED');
+        var emails = emailsInput.getValues();
+        if (!emails.length) {
+          alert("You havn't entered any emails so far!");
+          return;
+        }
+        var validEmailsCount = emails.filter(function(i) { return i.valid; }).length;
+        var alertMessage = 'You have entered ' + emails.length + (emails.length === 1 ? ' email' : ' emails') + ' in total.\n';
+        alertMessage += validEmailsCount + ' of them ' + (validEmailsCount === 1 ? 'is' : 'are') + ' valid.';
+        alert(alertMessage);
       }
     </script>
   </body>
