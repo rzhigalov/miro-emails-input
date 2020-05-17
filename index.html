@@ -73,9 +73,11 @@
         </div>
         <div class="miro_share__footer">
           <button type="button"
-            class="miro_share__button">Add email</button>
+            class="miro_share__button"
+            onclick="addRandomEmail()">Add email</button>
           <button type="button"
-            class="miro_share__button">Get emails count</button>
+            class="miro_share__button"
+            onclick="getEmailsCount()">Get emails count</button>
         </div>
       </div>
     </main>
@@ -86,6 +88,15 @@
       var inputContainerNode = document.querySelector('#emails-input');
       var emailsInput = EmailsInput(inputContainerNode, options);
 
+      // Adds random email
+      function addRandomEmail() {
+        alert('NOT IMPLEMENTED');
+      }
+
+      // Displays an alert with information on added emails
+      function getEmailsCount() {
+        alert('NOT IMPLEMENTED');
+      }
     </script>
   </body>
 </html>
