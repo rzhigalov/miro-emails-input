@@ -64,10 +64,7 @@ var EmailsInput = (function () {
       var styleSheetId = 'emails-input__styles' + (cssNamespace ? '--' + cssNamespace : '');
 
       if (!document.getElementById(styleSheetId)) {
-        var prefixedStyleSheet = STYLESHEET_TEMPLATE.replace(
-          /{{prefix}}/g,
-          cssNamespace ? cssNamespace + '-' : ''
-        );
+        var prefixedStyleSheet = STYLESHEET_TEMPLATE.replace(/{{prefix}}/g, cssNamespace ? cssNamespace + '-' : '');
         var stylesNode = document.createElement('style');
         stylesNode.id = styleSheetId;
         stylesNode.innerHTML = prefixedStyleSheet;
@@ -270,6 +267,7 @@ var EmailsInput = (function () {
 
         renderItems();
         notifyOnChanges();
+        inputElement.scrollIntoView({ behavior: 'smooth' });
       }
     }
 
