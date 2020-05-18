@@ -1,6 +1,6 @@
 Emails Input standalone component
 ======================
-#### [Miro](https://miro.com) Frontend test assesment
+#### Frontend test assesment
 
 Emails Input is a reusable component created to provide an easy way to collect emails.
 
@@ -69,7 +69,7 @@ EmailsInput can be configured with `options` object passed as a second argument 
 * `pattern` _string_ or _RegExp_ – Pattern against which email validity is tested.  
   Defaults to relaxed pattern, that allows special symbols in _name_ part of emails.  
   **Default**: ```/^[\w.%+-/!#$%&'*=?^_`{|}~]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/```  
-  Can be set to validate against domains (e.g. `/.*@miro.com$/`)
+  Can be set to validate against domains (e.g. `/.*@github.com$/`)
 * `embedCSS` _boolean_ – Enables runtime stylesheet embedding.  
   Set to `false` if you prefer handling your stylesheets manually. In that case you will need to link [emails-input.min.css stylesheet](https://github.com/rzhigalov/miro-emails-input/blob/master/emails-input.min.css) or provide a custom one.  
   **Default**: `true`
@@ -96,10 +96,13 @@ EmailsInput can be configured with `options` object passed as a second argument 
 3. I want my EmailInputs to look differently on one page. Do I need to write complex CSS overrides?  
    No, you don't have to. You can use `cssNamespace` to prevent collision and disable `embedCSS` to use your own stylesheet – feel free to use [emails-input.css stylesheet](https://github.com/rzhigalov/miro-emails-input/blob/master/emails-input.css) as a reference!
 
-4. Why there are no tests?  
+4. My email is valid, but this component says it's not. Should I create an issue?  
+   No need to. [There is no perfect email regex](http://emailregex.com/), but you are free to change this behaviour by chaging `options.pattern`.
+
+5. Why there are no tests?  
    Because I am still thinking on how to test _not only_ the public API, but perform tests on internals granulary withouth breaking existing closure construct. If for some reason you need this component for production, please [create an issue](https://github.com/rzhigalov/miro-emails-input/issues) so I know you need tests.
 
-5. How can I receive changes without checking `getValues()`?  
+6. How can I receive changes without checking `getValues()`?  
    There are two ways to achieve that:  
    1. Setup EventListener on EmailsInput node  
       ```html
@@ -121,11 +124,17 @@ EmailsInput can be configured with `options` object passed as a second argument 
       });
       ```
 
-6. Can I use npm to install this package?  
-   No, sorry. This component was created for demo purposes.
-
-7. Can I use it with TypeScript?  
-   Well, why not? This component lacks `d.ts` files, but annotated with JSDoc, so we can generate missing files in a minute!
+7. When I change _font-size_ everything changes its size. Is it broken?  
+   No, it's intended to behave this way. If you want EmailsInput not to change make sure you don't change font-size on root emails input. It looks best at 14px, but scales gracefully.
 
 8. Do I have to use `defer` attribute for script?  
    No, but it is better for your page's load.
+
+9. Can I use it with TypeScript?  
+   Well, why not? This component lacks `d.ts` files, but annotated with JSDoc, so we can generate missing files in a minute!
+
+10. Can I use npm to install this package?  
+   No, sorry. This component was created for demo purposes.
+
+11. What is the purpose of this component, if this is not production ready?  
+    This is a Frontend test assesment for one of my pre-interviews.
