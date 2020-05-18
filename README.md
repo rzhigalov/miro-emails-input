@@ -4,6 +4,7 @@ Emails Input standalone component
 
 Emails Input is a reusable component created to provide an easy way to collect emails.
 
+[Simple Demo page](https://rzhigalov.github.io/miro-emails-input/)
 
 ### Minimal Setup
 
@@ -82,3 +83,49 @@ EmailsInput can be configured with `options` object passed as a second argument 
   **Default**: `96px` via stylesheet
 * `minHeight` _number_ or _string_ – EmailsInput min height restriction. If passed as number will treat value as px. Set to _'auto'_ if you want input to collapse into 1 line.  
   **Default**: `96px` via stylesheet 
+
+
+### FAQ
+1. What is browser support for this component?  
+   Last 2 versions of every major browser is supported. And **IE 11**.  
+   And _probably_ IE 10, but I have no chance to test it  🤷🏻‍♂️
+
+2. Will multiple instances of EmailsInput conflict with each other?  
+   No. Every instance is isolated and provides globally unique internal ids.
+
+3. I want my EmailInputs to look differently on one page. Do I need to write complex CSS overrides?  
+   No, you don't have to. You can use `cssNamespace` to prevent collision and disable `embedCSS` to use your own stylesheet – feel free to use [emails-input.css stylesheet](https://github.com/rzhigalov/miro-emails-input/blob/master/emails-input.css) as a reference!
+
+4. Why there are no tests?  
+   Because I am still thinking on how to test _not only_ the public API, but perform tests on internals granulary withouth breaking existing closure construct. If for some reason you need this component for production, please [create an issue](https://github.com/rzhigalov/miro-emails-input/issues) so I know you need tests.
+
+5. How can I receive changes without checking `getValues()`?  
+   There are two ways to achieve that:  
+   1. Setup EventListener on EmailsInput node  
+      ```html
+      <div id="emails-input"></div>
+      ...
+      <script>
+        var inputContainerNode = document.querySelector('#emails-input');
+        inputContainerNode.addEventListener('emailsinputevent', function(inputEvt) {
+          const emails = inputEvt.details;
+          // Process received emails (objects)
+        }, false);
+      </script>
+      ```
+   2. _Subscribe_ to value changes by using callback(s). Every callback will be invoked on every EmailsInput value changes.  
+      ```js
+      var emailsInput = EmailsInput(inputContainerNode, options);
+      emailsInput.subscribe(function(emailItems) {
+        // Process received emails (objects)
+      });
+      ```
+
+6. Can I use npm to install this package?  
+   No, sorry. This component was created for demo purposes.
+
+7. Can I use it with TypeScript?  
+   Well, why not? This component lacks `d.ts` files, but annotated with JSDoc, so we can generate missing files in a minute!
+
+8. Do I have to use `defer` attribute for script?  
+   No, but it is better for your page's load.
